@@ -117,7 +117,7 @@ In the sucecss scenario this should return `200 OK` with:
 }
 ```
 
-Accessees must be sorted by `starts_at` in a descending order so that the most recent accesses will come as first. All accesses must belong to the owner of the token.
+Accesses must be sorted by `starts_at` in a descending order so that the most recent accesses come as first. All accesses must belong to the owner of the token.
 
 
 ```
