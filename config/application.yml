@@ -1,0 +1,23 @@
+defaults: &defaults
+  encoding: unicode
+  adapter: postgresql
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  port: <%= ENV['POSTGRES_PORT'] %>
+  host: <%= ENV['POSTGRES_HOST'] %>
+
+development:
+  <<: *defaults
+  database: access_api_development
+
+test:
+  <<: *defaults
+  database: access_api_test
+
+staging:
+  <<: *defaults
+  database: access_api_staging
+
+production:
+  <<: *defaults
+  database: access_api_production
