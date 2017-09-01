@@ -121,7 +121,7 @@ Accesses must be sorted by `starts_at` in a descending order so that the most re
 
 
 ```
-curl -X POST http://localhost:3000/accesses -H 'Authentication: Token ACTUAL_TOKEN_HERE' -d '{"access" => { "level": NEW_ACCESS_LEVEL, "starts_at": "NEW_ACCESS_STARTS_AT", "ends_at": "NEW_ACCESS_ENDS_AT" }}'
+curl -X POST http://localhost:3000/accesses -H 'Authentication: Token ACTUAL_TOKEN_HERE' -d '{"access": { "level": NEW_ACCESS_LEVEL, "starts_at": "NEW_ACCESS_STARTS_AT", "ends_at": "NEW_ACCESS_ENDS_AT" }}'
 ```
 
 The data must be appropriately validated. In case they do not pass validations, the backend must return a `422 Unprocessable Entity` with all the errors explained in the body (still JSON format). In case the data pass validations, the new access model must be immediately created and returned in the same format as above, together with an appropriate success status.
