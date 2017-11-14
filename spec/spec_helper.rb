@@ -25,10 +25,14 @@ require 'pry'
 require 'rack/test'
 require 'rspec/its'
 require 'database_cleaner'
+require 'factory_girl'
+
+FactoryGirl.find_definitions
 
 RSpec.configure do |config|
   config.include ApiHelpers
   config.include Rack::Test::Methods
+  config.include FactoryGirl::Syntax::Methods
 
   config.define_derived_metadata do |meta|
     meta[:aggregate_failures] = true

@@ -5,6 +5,7 @@ task :console do
   require_relative '../../environment'
   require 'irb'
   require 'irb/completion'
+  require 'awesome_print'
 
   loadDependency = lambda { |location|
     Dir["app/#{location}/**/*.rb"].each {|file|
@@ -18,7 +19,8 @@ task :console do
   loadDependency.call(:models)
 
   ActiveRecord::Base.logger = Logger.new(STDOUT)
-
+  
+  AwesomePrint.irb!
   ARGV.clear
   IRB.start
 end

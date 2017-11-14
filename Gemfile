@@ -16,6 +16,8 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-its'
   gem 'pry', '~> 0.10.1'
+  gem 'pry-byebug'
+  gem 'awesome_print'
 end
 
 group :test do
