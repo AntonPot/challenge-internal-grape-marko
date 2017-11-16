@@ -26,21 +26,23 @@ require 'rack/test'
 require 'rspec/its'
 require 'database_cleaner'
 require 'factory_girl'
+require 'awesome_print'
 
-FactoryGirl.find_definitions
 
 RSpec.configure do |config|
   config.include ApiHelpers
   config.include Rack::Test::Methods
   config.include FactoryGirl::Syntax::Methods
-
+  
   config.define_derived_metadata do |meta|
     meta[:aggregate_failures] = true
   end
-
+  
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
     DatabaseCleaner.strategy = :transaction
+    FactoryGirl.find_definitions
+    # AwesomePrint.pry!
   end
 
   config.before(:each) do

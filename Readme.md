@@ -96,7 +96,7 @@ The next step is to create an api for accesses.
 curl http://localhost:3000/accesses -H 'Authentication: Token ACTUAL_TOKEN_HERE'
 ```
 
-In the sucecss scenario this should return `200 OK` with:
+In the success scenario this should return `200 OK` with:
 
 ```
 {

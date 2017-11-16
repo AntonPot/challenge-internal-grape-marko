@@ -1,56 +1,31 @@
 require 'grape'
 require 'models/user'
 
-module Formater
-  def self.for_user(user)
-    {
-      user: {
-        id: user.id,
-        token: user.token,
-        access_level: user.access_level
-      }
-    }
-  end
-end
-
-
-module Api
+module Api  
   class Users < Grape::API
-    format :json
-    
-    helpers do
-      def unauthorized_error!
-        error!({error: 'Unauthorized'}, 401)
-      end
-
-      def server_error!(error)
-        # TODO => remove message string for production
-        error!({error: 'Server error', message: error.message}, 500) 
-      end
-    end
-  
-    rescue_from :all, with: :server_error!
-
     resource :user do
+
       desc 'Authenticate, set access_level and return User'
       get do
-        unauthorized_error! unless headers["Authentication"].is_a? String
-        user = User.find_by(token: headers["Authentication"][-32..-1])
+        authenticate!
         
-        if user
-          user.access_level += 1
-          user.save          
-          Formater.for_user(user)        
-        else
-          unauthorized_error!
-        end
+        # Find user accesses that are currently active and get the one with highest level
+        highest_active_access = @current_user.accesses.order(:level).map { |access|
+          access if (access.starts_at < Time.now) && (Time.now < access.ends_at)
+        }.last       
+        
+        # Set user_access if there is an active one, else set it to zero
+        @current_user.access_level = highest_active_access ? highest_active_access.level : 0 
+        @current_user.save          
+        JSONFormatter.for_user(@current_user)        
       end
     end
 
     resource :users do
+
       desc 'Create a User and return it'
       post do
-        Formater.for_user(User.create)
+        JSONFormatter.for_user(User.create)
       end
     end
   end

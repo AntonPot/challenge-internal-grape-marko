@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
-  before_create :set_token
-  
+  before_create :set_token    
+  has_many :accesses
+
   private
 
   def set_token
