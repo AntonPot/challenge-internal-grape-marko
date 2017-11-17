@@ -5,6 +5,11 @@ class Access < ActiveRecord::Base
   validate :starts_at_and_ends_at_cannot_be_in_the_past
   validate :ends_at_cannot_be_before_starts_at
 
+  def as_json(options = {})
+    default_options = {except: [:created_at, :updated_at, :user_id]}
+    super(default_options.merge(options))
+  end
+
   private
   
   def starts_at_and_ends_at_cannot_be_in_the_past

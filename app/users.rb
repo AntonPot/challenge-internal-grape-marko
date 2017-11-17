@@ -17,7 +17,7 @@ module Api
         # Set user_access if there is an active one, else set it to zero
         @current_user.access_level = highest_active_access ? highest_active_access.level : 0 
         @current_user.save          
-        JSONFormatter.for_user(@current_user)        
+        @current_user.as_json
       end
     end
 
@@ -25,7 +25,7 @@ module Api
 
       desc 'Create a User and return it'
       post do
-        JSONFormatter.for_user(User.create)
+        User.create.as_json
       end
     end
   end

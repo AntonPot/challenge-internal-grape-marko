@@ -8,7 +8,9 @@ module Api
       desc 'Return accesses belonging to token owner'
       get do
         authenticate!
-        JSONFormatter.for_accesses @current_user.accesses.order(:starts_at)
+        { 
+          accesses: @current_user.accesses.order(:starts_at).as_json 
+        }
       end
 
       desc 'Create access for token owner and return it'
@@ -23,7 +25,7 @@ module Api
         authenticate!
         access = @current_user.accesses.create(params[:access])
         if access.valid?
-          { access: JSONFormatter.for_access(access) }
+          access.as_json(root: true)
         else
           validations_error!(access.errors.messages)
         end

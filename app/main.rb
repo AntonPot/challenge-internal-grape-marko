@@ -1,7 +1,6 @@
 require 'grape'
 require 'users'
 require 'accesses'
-require 'helpers'
 
 module Api
   class Main < Grape::API
