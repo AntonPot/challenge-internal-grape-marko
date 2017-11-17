@@ -1,5 +1,3 @@
-require 'app/users'
-
 RSpec.describe Api::Users, type: :request do
   describe 'GET /user' do
     let!(:user)  { create(:user)}    
@@ -8,9 +6,7 @@ RSpec.describe Api::Users, type: :request do
       let!(:set_headers) { set_auth_header(user.token) }
       
       context 'response' do
-        before do
-          get '/user'
-        end
+        before { get '/user' }
 
         it 'returns status 200' do
           expect(last_response.status).to be 200

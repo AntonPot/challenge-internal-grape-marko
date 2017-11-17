@@ -3,15 +3,14 @@ require 'models/access'
 
 module Api
   class Accesses < Grape::API
-    resource 'accesses' do
+    resource :accesses do
+      before { authenticate! }
 
       desc 'Return accesses belonging to token owner'
       get do
-        authenticate!
-        { 
-          accesses: @current_user.accesses.order(:starts_at).as_json 
-        }
+        { accesses: @current_user.accesses.order(:starts_at).reverse.as_json }
       end
+
 
       desc 'Create access for token owner and return it'
       params do
@@ -22,27 +21,26 @@ module Api
         end
       end
       post do
-        authenticate!
         access = @current_user.accesses.create(params[:access])
         if access.valid?
           access.as_json(root: true)
         else
-          validations_error!(access.errors.messages)
+          unprocessable_entity_error!(access.errors.messages)
         end
       end
+
 
       desc 'Destroy access with provided id'
       params do
         requires :id, type: String, desc: 'Access ID.'
       end
       delete ':id' do
-        authenticate!
         access = Access.where( id: params[:id], user_id: @current_user.id )        
         unless access.empty?
           access.first.destroy
           body false
         else
-          unprocessable_entity_error!
+          not_found_error!
         end        
       end
     end

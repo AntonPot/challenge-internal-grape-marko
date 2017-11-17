@@ -1,6 +1,4 @@
-require 'app/main'
-
-RSpec.describe Api::Main do 
+RSpec.describe Api::Main, type: :request do 
   describe 'Unknown route' do
     it 'returns status 404' do
       get '/unknown_route_for_testing'

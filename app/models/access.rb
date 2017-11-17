@@ -11,7 +11,7 @@ class Access < ActiveRecord::Base
   end
 
   private
-  
+
   def ends_at_cannot_be_in_the_past
     if ends_at.present? && ends_at < (Time.now )
       errors.add(:ends_at, "cannot be in the past")

@@ -13,26 +13,26 @@ module Api
         user = User.find_by(token: headers["Authentication"][-32..-1])        
         @current_user = user ? user : unauthorized_error!
       end
-
+      
       def unauthorized_error!
-        error!({error: 'Unauthorized'}, 401)
+        error!({error: 'Unauthorized request'}, 401)
       end
 
-      def validations_error!(error)
-        error!({error: error}, 400)
+      def not_found_error!
+        error!({error: 'Not found'}, 404)
       end
 
-      def unprocessable_entity_error!
-        error!({error: 'Unprocessable entity'}, 422)
+      def unprocessable_entity_error!(error = 'Unprocessable entity')
+        error!({error: error}, 422)
       end
 
-      def server_error!(error)
+      def server_error!
         error!({error: 'Server error'}, 500) 
       end
     end
 
-    # rescue_from :all, with: :server_error!
-    rescue_from Grape::Exceptions::ValidationErrors, with: :validations_error!    
+    rescue_from Grape::Exceptions::ValidationErrors, with: :unprocessable_entity_error!    
+    rescue_from :all, with: :server_error! if ENV['RACK_ENV'] == 'production'
 
     mount Users
     mount Accesses

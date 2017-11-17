@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  before_create :set_token    
+  before_create :set_token
   has_many :accesses
 
   def as_json

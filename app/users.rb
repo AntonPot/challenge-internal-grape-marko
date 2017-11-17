@@ -4,7 +4,6 @@ require 'models/user'
 module Api  
   class Users < Grape::API
     resource :user do
-
       desc 'Authenticate, set access_level and return User'
       get do
         authenticate!
@@ -15,8 +14,8 @@ module Api
       end
     end
 
+    
     resource :users do
-
       desc 'Create a User and return it'
       post do
         User.create.as_json
