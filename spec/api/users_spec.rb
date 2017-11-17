@@ -1,6 +1,6 @@
 require 'app/users'
 
-RSpec.describe Api::Users do
+RSpec.describe Api::Users, type: :request do
   describe 'GET /user' do
     let!(:user)  { create(:user)}    
 
@@ -21,18 +21,10 @@ RSpec.describe Api::Users do
         end
       end
 
-      context 'access_level' do
-        it 'ignores future accesses' do
-          user.accesses.create(attributes_for(:access, :future))          
-          get '/user'
-          expect(json_response['user']['access_level']).to be 0
-        end
-  
-        it 'sets highest access level' do
-          [3,5,1,2,4].each { |l| user.accesses.create(attributes_for(:access).merge({level: l}))}
-          get '/user'
-          expect(json_response[:user][:access_level]).to be 5
-        end
+      it 'changes access level' do
+        user.accesses.create(attributes_for(:access, level: 2))
+        get '/user'
+        expect(json_response[:user][:access_level]).to be 2
       end
     end
 
@@ -44,7 +36,7 @@ RSpec.describe Api::Users do
           expect(json_response).to include 'error'
           expect(last_response.status).to be 401
         end
-
+        
         it 'has no token' do
           get '/user'
           expect(json_response).to include 'error'
