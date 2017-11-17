@@ -27,10 +27,6 @@ RSpec.describe Access, type: :model do
       end
 
       context 'time miss-match' do
-        it 'starts_at cannot be in the past' do
-          expect(build(:access, starts_at: Time.now - 1.minute)).to_not be_valid
-        end
-
         it 'ends_at cannot be in the past' do
           expect(build(:access, ends_at: Time.now - 1.minute)).to_not be_valid
         end
