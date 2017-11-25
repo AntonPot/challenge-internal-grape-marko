@@ -12,8 +12,13 @@ RSpec.describe Api::Users, type: :request do
           expect(last_response.status).to be 200
         end
 
-        it 'returns a user' do
-          expect(json_response).to include 'user'
+        it 'returns a user JSON' do
+          expect(json_response).to eql(
+            'user' => {
+              'id' => user.id,
+              'token' => user.token,
+              'access_level' => user.access_level
+            })
         end
       end
 
@@ -25,20 +30,11 @@ RSpec.describe Api::Users, type: :request do
     end
 
     context 'negative tests' do
-      context 'returns status 401' do
-        it 'has wrong token' do
-          set_auth_header(SecureRandom.uuid.gsub('-', ''))
-          get '/user'
-          expect(json_response).to include 'error'
-          expect(last_response.status).to be 401
-        end
-        
-        it 'has no token' do
-          get '/user'
-          expect(json_response).to include 'error'
-          expect(last_response.status).to be 401
-        end
+      before do
+        set_auth_header(SecureRandom.uuid.gsub('-', ''))
+        get '/user'
       end
+      it_behaves_like 'authenticatable'
     end
   end
 

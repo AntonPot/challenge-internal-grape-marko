@@ -20,6 +20,8 @@ ENV['RACK_ENV'] ||= 'test'
 
 require_relative '../environment'
 require_relative 'support/api_helpers'
+require_relative 'shared_examples/controllers'
+require_relative 'shared_examples/models'
 
 require 'pry'
 require 'rack/test'

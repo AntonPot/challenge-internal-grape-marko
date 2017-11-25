@@ -2,13 +2,6 @@ RSpec.describe Api::Accesses, type: :request do
   let(:access){ create(:access) }
   before { set_auth_header(access.user.token)}
 
-  shared_examples_for 'authenticatable' do
-    it 'returns 401 if token is wrong' do
-      expect(json_response).to include 'error'
-      expect(last_response.status).to be 401
-    end
-  end
-
   describe 'GET /accesses' do
     context 'positive tests' do
       context 'returns' do

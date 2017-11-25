@@ -16,8 +16,8 @@ module Api
       params do
         requires :access, type: Hash do
           requires :level, type: Integer, desc: 'Access level'
-          requires :starts_at, type: DateTime, desc: 'Access start point'
-          requires :ends_at, type: DateTime, desc: 'Access end point'
+          requires :starts_at, type: Time, desc: 'Access start point'
+          requires :ends_at, type: Time, desc: 'Access end point'
         end
       end
       post do
