@@ -1,20 +1,12 @@
 RSpec.describe User, type: :model do 
-  it 'has valid factory' do
-    expect(build(:user)).to be_valid
-  end
-
-  it 'has access_level 0' do
-    expect(build(:user).access_level).to be 0
-  end
+  let(:user) { build(:user) }
   
-  it 'has a 32 character token' do
-    expect(create(:user).token.size).to be 32
-  end
+  it_behaves_like 'valid', :user
+  it_behaves_like 'methods are avaliable for', :user, :accesses
 
-  it 'has one_to_many relation with Access' do
-    expect(build(:user).methods).to include :accesses
-  end
-
+  it { expect(user.access_level).to be 0 }
+  it { expect(create(:user).token.size).to be 32 }
+  
   it 'has json with root and without timestamps' do
     json_hash = build(:user).as_json
     expect(json_hash).to include 'user'

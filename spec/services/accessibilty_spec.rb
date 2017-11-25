@@ -1,10 +1,17 @@
 RSpec.describe Accessibilty do
-  let!(:user) { create(:user) }
-  before { set_auth_header(user) }
+  let!(:user) {
+    user = create(:user)
+    user.accesses << create(:access)
+    user.accesses << create(:access, ends_at: nil)
+    user.accesses << create(:access, :future)
+    set_auth_header(user)
+    user
+  }
+
+  it { expect(Accessibilty.check_for(user)).to be_an Access }
   
   it 'ignores future accesses' do
-    user.accesses.create(attributes_for(:access, :future))          
-    expect(Accessibilty.check_for(user)).to be nil
+    expect(Accessibilty.check_for(user).level).to be 1
   end
 
   it 'returns highest access level' do
